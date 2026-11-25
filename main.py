@@ -34,6 +34,9 @@ def main() -> None:
     encoded = text.encode("utf-8")
     if len(encoded) > 200:
         raise SystemExit(f"line is {len(encoded)} UTF-8 bytes, over the cap")
+    # The kit harness reads /output/entry.txt (see RULES.txt "The gate"),
+    # so the path is fixed, not taken from MAKEFUN_OUTPUT_DIR. Write via
+    # a temp file + replace so a crash never leaves a half-written entry.
     os.makedirs("/output", exist_ok=True)
     tmp_path = "/output/.entry.txt.tmp"
     with open(tmp_path, "w", encoding="utf-8", newline="") as f:
